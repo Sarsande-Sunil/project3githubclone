@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>index.html</title>
+</head>
+
+<style>
+    body {
+        margin: 0px;
+    }
+
+    #header {
+        display: flex;
+        flex-wrap: wrap;
+        background-color: black;
+        color: white;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+    #logo {
+        width: 5%;
+        text-align: right;
+    }
+
+    #logo img {
+        width: 30%;
+        border-radius: 80%;
+        padding: 9px;
+    }
+
+    #profile img {
+        border-radius: 80%;
+        width: 50%;
+        height: 35px;
+        padding-top: 7%;
+    }
+
+    #search {
+        width: 10%;
+        padding: 12px;
+    }
+
+    ul {
+        padding-left: 0px;
+    }
+
+    #list li {
+        display: inline;
+        margin-right: 2%;
+    }
+
+    #options {
+        width: 75%;
+    }
+
+    #profile {
+        width: 5%;
+    }
+
+    #main {
+        padding: 3%;
+    }
+    #get-btn-repo{
+        border-radius: 20px;
+        background-color: black;
+        color: white;
+        font-size: 20px;
+    }
+    #container{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 700px;
+        border: 2px solid black;
+        margin: auto;
+    }
+    #append1 {
+        width: 40%;
+        height: 700px;
+        border: 1px solid black;
+        margin: auto;
+    }
+     #append2 {
+        width: 40%;
+        height: 700px;
+        border: 1px solid black;
+        margin: auto;
+    }
+     #append3 {
+        width: 40%;
+        height: 700px;
+        border: 1px solid black;
+        margin: auto;
+    }
+    h1{
+        margin-left: 100px;
+    }
+    p{
+        margin-left: 30px;
+        font-size: 13px;
+        color: black;
+    }
+</style>
+
+<body>
+<div id="navbar-container"></div>
+<div id="main">
+    <button id="get-btn-repo">Get Repo</button>
+</div>
+<div id="container">
+    <div id="append1">
+        <h1>Clone_Crl</h1>
+    </div>
+    <div id="append2">
+        <h1>Commits_Url</h1>
+    </div>
+    <div id="append3">
+       <h1>Deployments_Url</h1>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="module">
+
+    import navbar from "./components/navbar.js";
+    import getData from "./scripts/getData.js";
+    var response;
+    console.log("getdata",getData);
+    console.log("navbar", navbar);
+
+    let navbarcontainer = document.getElementById("navbar-container");
+    navbarcontainer.innerHTML = navbar();
+
+    let search_box = document.getElementById("search-input");
+    search_box.addEventListener("keypress",ApiCall)
+   
+    async function ApiCall(e) {
+
+        if ( e.key === "Enter") {
+            
+            let user = search_box.value;
+            
+            let img = document.getElementById("profile-img");
+            
+             response = await getData(user);  // user on line number 93
+            
+            img.src = response.avatar_url;
+
+            console.log("response", response);
+
+        }
+        
+    }
+
+    let btn = document.getElementById("get-btn-repo");
+    btn.addEventListener("click",getUserRepo);
+
+    async function getUserRepo() {
+        
+        let res = await fetch(response.repos_url);
+
+        let data = await res.json();
+        appenddata(data)
+        console.log("data",data);
+
+    }
+
+    function appenddata(data){
+        data.forEach(function(el){
+            let main_div = document.getElementById("append1")
+        
+            let clone_url = document.createElement("p");
+            clone_url.innerHTML = "clone_url"+ el.clone_url
+
+            main_div.append(clone_url)
+
+            let main_div1 = document.getElementById("append2")
+
+            let commits_url = document.createElement("p");
+            commits_url.innerHTML = "commits_url" + el.commits_url
+
+            main_div1.append(commits_url)
+
+            let main_div2 = document.getElementById("append3")
+
+            let deployments_url = document.createElement("p");
+            deployments_url.innerHTML = "deployments_url" + el.deployments_url
+
+            main_div2.append(deployments_url)
+
+
+
+
+        })
+    }
+
+</script>
+
+<!-- 
+  for html
+  step1 make js file and make one function inside that return as html code 
+  step 2 export this code in html file
+ for js
+ append darta getring from js file
+step 1 import data from js file 
+step2 check data are coming or not 
+step 3 if user serch in input box they are able to get data 
+step 4 if user type something in box then and thne only function work
+step 5 make async whoes work aftere user seraching something in input box this function call api
+ step 6 in search box user have some value here e= define event listner
+ step 7 untill we get data properly 
+ step 8 change profile of user with exting user 
+ step 9 get user repository 
+ step 11 append on navbar and get
+step 12 make btn dynamic so add event listner them 
+step 13 we have get data in previous url no need to take new url so dont used 
+-->
+
+
+<!-- llow_forking: true
+archive_url: "https://api.github.com/repos/swanandapps/apramac/{archive_format}{/ref}"
+archived: false
+assignees_url: "https://api.github.com/repos/swanandapps/apramac/assignees{/user}"
+blobs_url: "https://api.github.com/repos/swanandapps/apramac/git/blobs{/sha}"
+branches_url: "https://api.github.com/repos/swanandapps/apramac/branches{/branch}"
+clone_url: "https://github.com/swanandapps/apramac.git"
+collaborators_url: "https://api.github.com/repos/swanandapps/apramac/collaborators{/collaborator}"
+comments_url: "https://api.github.com/repos/swanandapps/apramac/comments{/number}"
+commits_url: "https://api.github.com/repos/swanandapps/apramac/commits{/sha}"
+compare_url: "https://api.github.com/repos/swanandapps/apramac/compare/{base}...{head}"
+contents_url: "https://api.github.com/repos/swanandapps/apramac/contents/{+path}"
+contributors_url: "https://api.github.com/repos/swanandapps/apramac/contributors"
+created_at: "2019-03-01T06:18:39Z"
+default_branch: "master"
+deployments_url: "https://api.github.com/repos/swanandapps/apramac/deployments"
+description: null
+disabled: false
+downloads_url: "https://api.github.com/repos/swanandapps/apramac/downloads"
+events_url: "https://api.github.com/repos/swanandapps/apramac/events"
+fork: false
+forks: 0
+forks_count: 0
+forks_url: "https://api.github.com/repos/swanandapps/apramac/forks"
+full_name: "swanandapps/apramac"
+git_commits_url: "https://api.github.com/repos/swanandapps/apramac/git/commits{/sha}"
+git_refs_url: "https://api.github.com/repos/swanandapps/apramac/git/refs{/sha}"
+git_tags_url: "https://api.github.com/repos/swanandapps/apramac/git/tags{/sha}"
+git_url: "git://github.com/swanandapps/apramac.git"
+has_downloads: true
+has_issues: true
+has_pages: false
+has_projects: true
+has_wiki: true
+homepage: null
+hooks_url: "https://api.github.com/repos/swanandapps/apramac/hooks"
+html_url: "https://github.com/swanandapps/apramac"
+id: 173246256
+is_template: false
+issue_comment_url: "https://api.github.com/repos/swanandapps/apramac/issues/comments{/number}"
+issue_events_url: "https://api.github.com/repos/swanandapps/apramac/issues/events{/number}"
+issues_url: "https://api.github.com/repos/swanandapps/apramac/issues{/number}"
+keys_url: "https://api.github.com/repos/swanandapps/apramac/keys{/key_id}"
+labels_url: "https://api.github.com/repos/swanandapps/apramac/labels{/name}"
+language: "Vue"
+languages_url: "https://api.github.com/repos/swanandapps/apramac/languages"
+license: null
+merges_url: "https://api.github.com/repos/swanandapps/apramac/merges"
+milestones_url: "https://api.github.com/repos/swanandapps/apramac/milestones{/number}"
+mirror_url: null
+name: "apramac"
+node_id: "MDEwOlJlcG9zaXRvcnkxNzMyNDYyNTY="
+notifications_url: "https://api.github.com/repos/swanandapps/apramac/notifications{?since,all,participating}"
+open_issues: 1
+open_issues_count: 1
+owner: {login: 'swanandapps', id: 32398003, node_id: 'MDQ6VXNlcjMyMzk4MDAz', avatar_url:
+'https://avatars.githubusercontent.com/u/32398003?v=4', gravatar_id: '', …}
+private: false
+pulls_url: "https://api.github.com/repos/swanandapps/apramac/pulls{/number}"
+pushed_at: "2022-02-10T20:28:42Z"
+releases_url: "https://api.github.com/repos/swanandapps/apramac/releases{/id}"
+size: 52603
+ssh_url: "git@github.com:swanandapps/apramac.git"
+stargazers_count: 0
+stargazers_url: "https://api.github.com/repos/swanandapps/apramac/stargazers"
+statuses_url: "https://api.github.com/repos/swanandapps/apramac/statuses/{sha}"
+subscribers_url: "https://api.github.com/repos/swanandapps/apramac/subscribers"
+subscription_url: "https://api.github.com/repos/swanandapps/apramac/subscription"
+svn_url: "https://github.com/swanandapps/apramac"
+tags_url: "https://api.github.com/repos/swanandapps/apramac/tags"
+teams_url: "https://api.github.com/repos/swanandapps/apramac/teams"
+topics: []
+trees_url: "https://api.github.com/repos/swanandapps/apramac/git/trees{/sha}"
+updated_at: "2019-12-08T06:09:17Z"
+url: "https://api.github.com/repos/swanandapps/apramac"
+visibility: "public"
+watchers: 0
+watchers_count: 0 -->
